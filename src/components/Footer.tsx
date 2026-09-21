@@ -1,22 +1,18 @@
 export function Footer() {
   return (
-    <footer className="mt-16 border-t border-[var(--border)] py-8 text-center text-sm text-[var(--muted)]">
+    <footer className="site-footer">
       <p>
-        Roadmap data ©{" "}
+        data:{" "}
         <a
           href="https://www.microsoft.com/microsoft-365/roadmap"
-          className="underline underline-offset-2 hover:text-[var(--foreground)]"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Microsoft Release Communications
+          microsoft release communications
         </a>
-        . Not affiliated with Microsoft.
+        , cached on the server ~1h. not affiliated with microsoft.
       </p>
-      <p className="mt-2">
-        Site by{" "}
-        <span className="font-medium text-[var(--foreground)]">Proof/Studio</span>
-      </p>
+      <p className="mt-2">site by proof/studio.</p>
     </footer>
   );
 }
