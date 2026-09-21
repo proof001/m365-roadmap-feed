@@ -1,4 +1,5 @@
 import { truncateText } from "@/lib/html";
+import { formatDaysAgo, daysSince } from "@/lib/format";
 import { statusTagClass } from "@/lib/stats";
 import type { RoadmapItem } from "@/lib/types";
 
@@ -14,11 +15,14 @@ function formatDate(value: string): string {
 }
 
 export function RoadmapRow({ item }: { item: RoadmapItem }) {
-  const description = truncateText(item.descriptionPlain);
-  const updated = formatDate(item.modified || item.created);
+  const description = truncateText(item.descriptionPlain, 220);
+  const sortDate = item.modified || item.created;
+  const ageDays = daysSince(sortDate);
+  const stale = ageDays !== null && ageDays > 90;
+
   const titleContent = item.moreInfoLink ? (
     <a
-      className="item-title"
+      className="repo"
       href={item.moreInfoLink}
       target="_blank"
       rel="noopener noreferrer"
@@ -26,40 +30,34 @@ export function RoadmapRow({ item }: { item: RoadmapItem }) {
       {item.title}
     </a>
   ) : (
-    <span className="item-title">{item.title}</span>
+    <span className="repo">{item.title}</span>
   );
+
+  const status = item.status || "unknown";
 
   return (
     <tr>
+      <td className={`n${stale ? " stale" : ""}`}>{formatDaysAgo(sortDate)}</td>
       <td>
         {titleContent}
-        {description ? <span className="item-desc">{description}</span> : null}
-      </td>
-      <td>
-        <span className={`tag ${statusTagClass(item.status)}`}>
-          {item.status || "unknown"}
-        </span>
+        <span className={`tag ${statusTagClass(item.status)}`}>{status}</span>
+        {description ? <span className="desc">{description}</span> : null}
       </td>
       <td className="hide-s">
-        <div className="flex flex-wrap gap-1">
+        <div className="tag-row">
           {item.products.length > 0 ? (
             item.products.map((product) => (
-              <span key={product} className="tag tag-cat">
+              <span key={product} className="tag cat">
                 {product}
               </span>
             ))
           ) : (
-            <span className="text-[var(--muted)]">—</span>
+            "—"
           )}
         </div>
       </td>
-      <td className="hide-s n">
-        <div>{formatDate(item.publicPreviewDate)}</div>
-        <div className="text-[13px] font-bold text-[var(--muted)]">
-          ga {formatDate(item.publicDisclosureAvailabilityDate)}
-        </div>
-      </td>
-      <td className="n">{updated}</td>
+      <td className="hide-s">{formatDate(item.publicPreviewDate)}</td>
+      <td className="hide-s">{formatDate(item.publicDisclosureAvailabilityDate)}</td>
     </tr>
   );
 }

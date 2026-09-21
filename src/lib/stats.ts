@@ -29,9 +29,9 @@ export function computeRoadmapStats(items: RoadmapItem[]): RoadmapStats {
 
 export function statusTagClass(status: string): string {
   const s = status.toLowerCase();
-  if (s.includes("roll")) return "tag-yel";
+  if (s.includes("roll")) return "off";
   if (s.includes("develop") || s.includes("preview")) return "tag-blue";
   if (s.includes("launch") || s.includes("ga") || s.includes("general")) return "tag-grn";
   if (s.includes("cancel")) return "tag-pink";
-  return "tag-cat";
+  return "cat";
 }
