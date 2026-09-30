@@ -8,5 +8,6 @@ export function daysSince(isoDate: string): number | null {
 export function formatDaysAgo(isoDate: string): string {
   const days = daysSince(isoDate);
   if (days === null) return "—";
+  if (days === 0) return "Today";
   return `${days}d ago`;
 }
